@@ -17,6 +17,11 @@ exports.esPing = function(){
     })
 }
 
-exports.search = function(){
+exports.search = function(type,body,callback){
+    client.search({index:'shudian',body:body,type:type})
+          .then(result=>{
+              callback(result)
+          }).catch(err=>{
 
+          })
 }

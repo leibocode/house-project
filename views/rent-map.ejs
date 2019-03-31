@@ -46,55 +46,114 @@
             </div>
             <div class="r-container" style="position: relative; overflow: auto;">
                 <ul id="house-flow" class="flow-default r-content">
-                    <!--<tr th:each="house: ${houses}">-->
-                        <!--<li class="list-item">-->
-                            <!--<a th:href="@{/rent/house/show(id=${house.id})}" target="_blank" th:title="${house.title}"-->
-                               <!--data-community="1111027382235">-->
-                                <!--<div class="item-aside">-->
-                                    <!--<img th:src="${house.cover} + '?imageView2/1/w/116/h/116'">-->
-                                    <!--<div class="item-btm">-->
-                    <!--<span class="item-img-icon">-->
-                    <!--<i class="i-icon-arrow"></i><i class="i-icon-dot"></i></span>&nbsp;&nbsp;-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="item-main"><p class="item-tle" th:text="${house.title}">大标题</p>-->
-                                    <!--<p class="item-des">-->
-                                        <!--<span th:text="${house.room} + '室' + ${house.parlour} + '厅'"></span>-->
-                                        <!--<span th:text="${house.area} + '平米'"></span>-->
-                                        <!--<span>南 北</span>-->
-                                        <!--<span class="item-side" th:text="${house.price}">0<span>元/月</span></span>-->
-                                    <!--</p>-->
-                                    <!--<p class="item-community">-->
-                                        <!--<span class="item-replace-com" th:text="${house.district}">小区</span><span-->
-                                            <!--class="item-exact-com" th:text="${house.district}">小区</span>-->
-                                    <!--</p>-->
-                                    <!--<p class="item-tag-wrap">-->
-                    <!--<span th:each="tag: ${house.tags}">-->
-                    <!--<span class="item-tag-color_2 item-extra" title="" th:text="${tag}">标签</span>-->
-                    <!--</span>-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</tr>-->
+                
                 </ul>
             </div>
         </div>
         <div id="allmap" class="wrapper">
         </div>
     </div>
-
+    <% include common/footer.ejs%>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Oi2uijgpb8tILz7Ys9Q48KbmmfHDSpjK"></script>
     <script type="text/javascript" src="/js/baidu-map/TextIconOverlay.js"></script>
     <script type="text/javascript" src="/js/baidu-map/MarkerClusterer.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
     <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="/lib/layui/layui.js"></script>
-    <script type="text/javascript" src="/js/rent-map.js"></script>
+    <!-- <script type="text/javascript" src="/js/rent-map.js"></script> -->
     <script type="text/javascript">
-       //初始化加载地图数据
+        $(function(){
+            alert('123')
+            var city = '北京'
+            var regions =[
+
+            ]
+            load()
+        })
+       //初始化地图数据
+        var regionCountMap ={},
+           labels =[],//标签管理
+           params ={
+               orderBy:'lastUpdateTime',
+               orderDirection:'desc'
+           },
+           customLayer;//麻点图
+        
+        
+        function load(city,regions,aggDate){
+            //百度地图API功能
+            //创建实例,设置地图 设置地图显示最大级别为城市
+            var map = new BMap.Map('allmap',{minZoom:12})
+            //城市中心
+            //var print = new BMap.Point(city.baiduMapLongitude,city.baiduMapLatitude)
+            var point = new BMap.Point(116.404185,39.915574)
+            //初始化地图,设置中心点坐标及地图级别
+            map.centerAndZoom(point,12)
+
+            map.addControl(new BMap.NavigationControl({enableGeolocation: true})); // 添加比例尺控件
+            map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT})); // 左上角
+            map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+            // for(var i =0;i<aggDate.length;i++){
+            //     regionCountMap[aggDate[i].key] = aggDate[i].count
+            // }
 
 
+
+        }
+
+        /*
+          刻画地区
+          @param map
+          @param regionList
+        */
+        function drawRegion(map,regionList){
+            var boundary = new BMap.Boundary()
+            var polygonContext = {}
+            var regionPoint
+            var textLabel
+            for(var i =0;i<regionList.length;i++){
+                regionPoint = new BMap.Point(regionList[i].baiduMapLongitude
+                ,regionList[i].baiduMapLatitude)
+
+                var houseCount = 0
+                if(regionList[i].en_name in regionCountMap){
+                    houseCount = regionCountMap[regionList[i].en_name]
+
+                    var textContent = '<p style="margin-top:20px;pointer-events:none"></p>'+
+                    regionList[i].cn_name+'<p style="pointer-events: none">'+
+                        houseCount+'套</p>';
+                    textLabel = new BMap.Label(textContent,{
+                        position:regionPoint,//位置
+                        offset:new BMap.size(-40,20) //文本偏移量
+                    })
+
+                    textLabel.setStyle({
+                        height: '78px',
+                        width: '78px',
+                        color: '#fff',
+                        backgroundColor: '#0054a5',
+                        border: '0px solid rgb(255, 0, 0)',
+                        borderRadius: "50%",
+                        fontWeight: 'bold',
+                        display: 'inline',
+                        lineHeight: 'normal',
+                        textAlign: 'center',
+                        opacity: '0.8',
+                        zIndex: 2,
+                        overflow: 'hidden'
+                    });
+
+                    map.addOverlay(textLabel); // 将标签画在地图上
+
+                    //记录行政地区覆盖物
+                    polygonContext[textContent] =[]
+                    (function(){
+                        boundary.get(city.cn_name,)
+                    })(textContent)
+                }
+            }
+        }
     </script>
 </body>
 </html>
