@@ -40,7 +40,6 @@ app.get('/search',function(req,res,next){
           .then(data=>{
               res.json(data.hits.hits)
           }).catch(err=>{
-              console.log(err)
               res.send([])
           })
 })
