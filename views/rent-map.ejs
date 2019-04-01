@@ -66,9 +66,31 @@
             alert('123')
             var city = '北京'
             var regions =[
+                {
+                    cn_name:'东城区',
+                    level:'region',
+                    belong_to:'bj',
+                    baiduMapLongitude:116.42189,
+                    baiduMapLatitude:39.938574
 
+                },
+                {
+                    cn_name:'东城区',
+                    level:'region',
+                    belong_to:'bj',
+                    baiduMapLongitude:116.39565,
+                    baiduMapLatitude:39.929986
+                }
             ]
-            load()
+            load(city,regions)
+
+            //排序切换
+            $('ol.order-select li').on('click',function(){
+                $('ol.order-select li.on').removeClass('on');
+                $(this).addClass('on');
+                params.orderBy = $(this).attr('data-bind');
+                params.orderDirection = $(this).attr('data-direction');
+            })
         })
        //初始化地图数据
         var regionCountMap ={},
@@ -80,7 +102,7 @@
            customLayer;//麻点图
         
         
-        function load(city,regions,aggDate){
+        function load(city,regions){
             //百度地图API功能
             //创建实例,设置地图 设置地图显示最大级别为城市
             var map = new BMap.Map('allmap',{minZoom:12})
@@ -98,7 +120,7 @@
             //     regionCountMap[aggDate[i].key] = aggDate[i].count
             // }
 
-
+            drawRegion(map,regions)
 
         }
 
@@ -115,10 +137,11 @@
             for(var i =0;i<regionList.length;i++){
                 regionPoint = new BMap.Point(regionList[i].baiduMapLongitude
                 ,regionList[i].baiduMapLatitude)
+                alert(regionPoint)
 
                 var houseCount = 0
                 if(regionList[i].en_name in regionCountMap){
-                    houseCount = regionCountMap[regionList[i].en_name]
+                   // houseCount = regionCountMap[regionList[i].en_name]
 
                     var textContent = '<p style="margin-top:20px;pointer-events:none"></p>'+
                     regionList[i].cn_name+'<p style="pointer-events: none">'+
@@ -149,10 +172,64 @@
                     //记录行政地区覆盖物
                     polygonContext[textContent] =[]
                     (function(){
-                        boundary.get(city.cn_name,)
+                        boundary.get(city.cn_name+regionList[i].cn_name,function(rs){
+                            var count = rs.boundaries.length
+                            if(count==0){
+                                alert('未能获取当前输入的行政地区')
+                                return
+                            }
+
+                            for(var j=0;j<count;j++){
+                                var polygon = new BMap.Polygon(
+                                    rs.boundaries[j],
+                                    {
+                                        strokeWeight: 2,
+                                        strokeColor:'#0054a5',
+                                        fillOpacity: 0.3,
+                                        fillColor: '#0054a5'
+                                    }
+                                );
+                                map.addOverlay(polygon); // 添加覆盖物
+                                polygonContext[textContent].push(polygon);
+                                polygon.hide(); // 初始化隐藏边界
+                            }
+                        })
                     })(textContent)
+
+                    textLabel.addEventListener('mouseover',function(event){
+                        var label  = event.target
+                        var boundaries = polygonContext[label.getContent()]
+
+                        label.setStyle({backgroundColor:'#1AA591'})
+
+                        for(var n=0;i<boundaries.length;n++){
+                            boundaries[n].show();
+                        }
+                    })
+
+                    textLabel.addEventListener('mouseout', function (event) {
+                        var label = event.target;
+                        var boundaries = polygonContext[label.getContent()];
+
+                        label.setStyle({backgroundColor: '#0054a5'});
+                        for (var n = 0; n < boundaries.length; n++) {
+                            boundaries[n].hide();
+                        }
+                    });
+
+                    textLabel.addEventListener('click', function (event) {
+                        var label = event.target;
+                        var map = label.getMap();
+                        map.zoomIn();
+                        map.panTo(event.point);
+                    });
                 }
             }
+        }
+
+        //缩放map
+        function mapResize(_map){
+            
         }
     </script>
 </body>
