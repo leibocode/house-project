@@ -1,16 +1,16 @@
+import path from 'path'
 const express = require('express')
 const es =require('elasticsearch')
 const app = express()
 const bodyParser = require('body-parser')
-const path = require('path')
-const loginRouter = require('./routes/login')
+const loginRouter = require('./src/middlewares/routes/login')
 //const router = express.Router()
-const config = require('./config/config')
+const config = require('./src/config/config')
 
-const { esPing } = require('./libs/es')
+// const { esPing } = require('./libs/es')
 
-//启动es
-esPing()
+// //启动es
+// esPing()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -27,9 +27,12 @@ app.use(function(req,res,next){
 
 
 app.use('/xunwu',loginRouter)
+app.get('/test',function(req,res,next){
+    res.send('xx')
+})
 
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './src/views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname,'public')))

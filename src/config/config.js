@@ -5,6 +5,7 @@ module.exports ={
         host:'localhost',
         user:'root',
         password:'123',
-        database:'xunwu'
+        database:'xunwu',
+        port:3306
     }
 }
