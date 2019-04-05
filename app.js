@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
+
 app.use(function(req,res,next){
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -24,28 +25,8 @@ app.use(function(req,res,next){
     next();
 })
 
-app.get('/search',function(req,res,next){
-    const { q } =req.query
-    console.log(q)
-    let body = {
-        size:10000,
-        from:0,
-        query:{
-            match:{
-                name:q
-            }
-        }
-    }
-    client.search({index:'shudian',body:body,type:'book'})
-          .then(data=>{
-              res.json(data.hits.hits)
-          }).catch(err=>{
-              res.send([])
-          })
-})
 
 app.use('/xunwu',loginRouter)
-
 
 
 app.set('views', path.join(__dirname, 'views'));
