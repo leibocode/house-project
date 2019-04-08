@@ -5,10 +5,15 @@ module.exports.Success = {
 
 module.exports.PasswordIncorrect = {
     status:2,
-    message:'密码错误'
+    message:'密码错误!'
 }
 
 module.exports.MobileExist = {
     status:3,
-    message:"手机号码已存在"
+    message:"手机号码已存在!"
+}
+
+module.exports.searchError ={
+    status:1,
+    message:'搜索数据发生未知错误!'
 }

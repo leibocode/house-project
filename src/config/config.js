@@ -1,6 +1,10 @@
 
 module.exports ={
-    search:['http://localhost:9200'],
+    search:{
+        host:['http://localhost:9200'],
+        index:'xunwu',
+        type:'house'
+    },
     mysql:{
         host:'localhost',
         user:'root',
