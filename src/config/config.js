@@ -6,6 +6,7 @@ module.exports ={
         user:'root',
         password:'123',
         database:'xunwu',
-        port:3306
+        port:3306,
+        dialect: 'mysql'
     }
 }

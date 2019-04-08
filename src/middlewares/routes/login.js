@@ -1,8 +1,8 @@
 const express =require('express')
 const router = express.Router()
-// const models = require('../../database')
+const models = require('../../database')
 
-// const User = models.User
+const User = models.User
 
 
 router.get('/index',function(req,res,next){
@@ -25,11 +25,11 @@ router.get('/houseDetail',function(req,res,next){
     
 })
 
-// router.get('/user',function(req,res,next){
-//     User.findAll().then((users)=>{
-//         res.json(users)
-//     })
-// })
+router.get('/user',function(req,res,next){
+     User.findAll().then((users)=>{
+         res.json(users)
+     })
+})
 
 
 

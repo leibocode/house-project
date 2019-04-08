@@ -14,7 +14,7 @@ try {
     throw e
 }
 
-fs.readFileSync(__dirname)
+fs.readdirSync(__dirname)
   .filter((file)=>{
       return (file.indexOf('.') && (file !==basename) && file.slice(-3)==='.js')
   })

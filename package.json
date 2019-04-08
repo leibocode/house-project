@@ -6,13 +6,12 @@
   "scripts": {
     "build":"nodemon --watch src --exec babel src ./dist -d",
     "start":"npm run build && node ./dist/app.js",
-    "dev":"nodemon --watch app.js --exec babel-node"
+    "dev":"babel-node  app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/preset-env": "^7.4.3",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "elasticsearch": "^15.4.1",
