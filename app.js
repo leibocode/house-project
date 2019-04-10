@@ -1,4 +1,5 @@
 import path from 'path'
+import { esPing} from './src/libs/es'
 const express = require('express')
 const es =require('elasticsearch')
 const app = express()
@@ -9,8 +10,8 @@ const config = require('./src/config/config')
 
 // const { esPing } = require('./libs/es')
 
-// //启动es
-// esPing()
+//启动es
+esPing()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({

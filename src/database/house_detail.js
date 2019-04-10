@@ -1,5 +1,5 @@
-export default function (sequelize,DataType){
-    const HouseDetail = sequelize.define(
+// export default function (sequelize,DataType){
+//     const HouseDetail = sequelize.define(
 
-    );
-}
+//     );
+// }

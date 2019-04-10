@@ -1,11 +1,11 @@
-import elasticsearch from elasticsearch
+const elasticsearch = require('elasticsearch')
 const config = require('../config/config')
 const client  = elasticsearch.Client({
     host:config.search.host,
     log:'trace'
 })
 
-export function pingEs() {
+export function esPing() {
     client.ping({
         requestTimeout:1000
     },function(error){
@@ -18,11 +18,67 @@ export function pingEs() {
 }
 
 export function search(body) {
-    client.search({
-        index:config.search.index,
-        type:config.search.type,
-        body:body
-    }).then(()=>{
+    return new Promise((resolve,reject)=>{
+        client.search({
+            index:config.search.index,
+            type:config.search.type,
+            body:body
+        }).then((res)=>{
+            resolve(res.hits.hits)
+        }).catch(err=>{
+            reject(err)
+        })
+    })
+}
 
+/**
+ * es 批量导入数据
+ * @param {*} data 
+ */
+export function bulkIndex(data){
+    return new Promise((resolve,reject)=>{
+        let bulkBody = []
+        data.forEach(item=>{
+            bulkBody.push({
+                index:{
+                    _index:config.search.index,
+                    _type:config.search.type,
+                    _id:item.id
+                }
+            })
+            bulkBody.push(item)
+        })
+        client.bulk({body:bulkBody})
+              .then(res=>{
+                  //导入成功
+              }).catch(err=>{
+                  reject(err)
+              })
+    })
+}
+
+/**
+ * 分页查询
+ * @param {*} size 
+ * @param {*} from 
+ */
+export function searchByPage(size,from){
+    return new Promise((resolve,reject)=>{
+        let body = {
+            size,
+            from,
+            query:{
+                match_all:{}
+            }
+        }
+        client.search({
+            index:config.search.index,
+            type:config.search.type,
+            body:body
+        }).then(res=>{
+            resolve(res.hits.hits)
+        }).catch(err=>{
+            reject(err)
+        })
     })
 }
