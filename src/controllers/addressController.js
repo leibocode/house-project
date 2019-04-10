@@ -1,5 +1,5 @@
-
-
+const models  = require('../database')
+const Support = models.Support
 /**
  * @description 处理和地区相关的控制器
  * @author LeiBo
@@ -11,7 +11,7 @@ class AddressService {
      * 获取所有支持的城市列表
      */
     findAllCities(){
-
+        Support.find({})
     }
 
     /**

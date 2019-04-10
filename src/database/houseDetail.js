@@ -1,0 +1,56 @@
+export default function (sequelize,DataTypes){
+    const HouseDateil = sequelize.define('HouseDetail',{
+        id:{
+            type:DataTypes.UUID,
+            defaultValue:DataTypes.UUIDv4,
+            primaryKey:true
+        },
+        description:{
+            type:DataTypes.STRING(255),
+            allowNull:false
+        },
+        layout_desc:{
+            type:DataTypes.STRING(255),
+            allowNull:false
+        },
+        traffic:{
+            type:DataTypes.STRING(255),
+            allowNull:false
+        },
+        round_service:{
+            type:DataTypes.STRING(255),
+            allowNull:false
+        },
+        rent_way:{
+            type:DataTypes.INTEGER
+        },
+        address:{
+            type:DataTypes.STRING
+        },
+        subway_line_id:{
+            type:DataTypes.INTEGER,
+            allowNull:false
+        },
+        subway_line_name:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
+        subway_station_id:{
+            type:DataTypes.INTEGER,
+            allowNull:false
+        },
+        subway_station_name:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
+        houseId:{
+            type:DataTypes.STRING
+        }
+    },{
+        freezeTableName:true,
+        tableNmae:'house_detail',
+        timestamps:false
+    })
+
+    return HouseDateil
+}

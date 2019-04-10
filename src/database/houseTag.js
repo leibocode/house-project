@@ -1,19 +1,24 @@
 
-export default function (sequelize,DataTypes) {
-    const House = sequelize.define('House',{
+export default function(sequelize,DataTypes){
+    const HouseTag = sequelize.define('HouseTag',{
         id:{
             type:DataTypes.UUID,
             defaultValue:DataTypes.UUIDV4,
             primaryKey:true
         },
-        title:{
+        house_id:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
+        name:{
             type:DataTypes.STRING,
             allowNull:false
         }
     },{
         freezeTableName:true,
-        tableName:'house',
+        tableName:'house_tag',
         timestamps:false
     })
-    return House
+
+    return HouseTag
 }
