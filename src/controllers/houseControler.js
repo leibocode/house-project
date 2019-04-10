@@ -1,8 +1,7 @@
-const Db = require('../libs/db')
+const models = require('../../database')
+const House = models.House
 
-class HouseController {
-    
-
+export default class HouseController {
     /**
      * @description 查询完整房源信息
      * @author LeiBo
@@ -11,7 +10,7 @@ class HouseController {
      * @memberof HouseController
      */
     findCompleteOne(houseId){
-
+        let house  = House.find()
     }
 
 

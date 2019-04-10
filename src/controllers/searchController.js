@@ -1,21 +1,52 @@
-
-/**
- * @description
- * @author LeiBo
- * @date 2019-04-08
- * @class SearchController
- */
-import { search } from '../libs/es'
+import { search,searchByPage,searchSuggest } from '../libs/es'
 export default class SearchController {
+
     /**
-     * @description
-     * @author 
-     * @date 2019-04-10
-     * @param {*} body
-     * @param {*} filter
-     * @memberof SearchController
+     * 查询目标房源
+     * @param {} houseId 
      */
-    query(body,filter){
-        
+    index(houseId){
+        return new Promise((resolve,reject)=>{
+            let body = {
+                id:houseId
+            }
+            search(body).then(res=>{
+                resolve(res)
+            }).catch(err=>{
+                reject(err)
+            })
+        })
+    }
+
+    /**
+     * 
+     * @param {*} houseId 
+     */
+    remove(houseId){
+        return new Promise((resolve,reject)=>{
+            let body = {
+                id:houseId
+            }
+            search(body).then(res=>{
+                resolve(res)
+            }).catch(err=>{
+                reject(err)
+            })
+        })
+    }
+
+    query(searchData) {
+        return new Promise((resolve,reject)=>{
+            
+        })
+    }
+    
+
+    /**
+     * 精确
+     * @param {} mapSearch 
+     */
+    mapQuery(mapSearch) {
+
     }
 }

@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build":"nodemon --watch src --exec babel src ./dist -d",
-    "start":"npm run build && node ./dist/app.js",
-    "dev":"babel-node  app.js"
+    "build": "nodemon --watch src --exec babel src ./dist -d",
+    "start": "npm run build && node ./dist/app.js",
+    "dev": "babel-node  app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.0.0-rc.1",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "elasticsearch": "^15.4.1",
@@ -19,6 +20,7 @@
     "mysql": "^2.16.0",
     "mysql2": "^1.6.5",
     "node-schedule": "^1.3.2",
+    "nodemailer": "^6.1.0",
     "sequelize": "^5.2.11",
     "sequelize-cli": "^5.4.0"
   },

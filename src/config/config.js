@@ -1,7 +1,7 @@
 
 module.exports ={
     search:{
-        host:['http://localhost:9200'],
+        host:'http://localhost:9200',
         index:'xunwu',
         type:'house'
     },

@@ -1,9 +1,12 @@
-const elasticsearch = require('elasticsearch')
+
+import { Client } from '@elastic/elasticsearch'
 const config = require('../config/config')
-const client  = elasticsearch.Client({
-    host:config.search.host,
-    log:'trace'
+
+const client = new Client({
+    node:config.search.host
 })
+
+
 
 export function esPing() {
     client.ping({
@@ -15,6 +18,16 @@ export function esPing() {
             console.log('es启动成功');
         }
     })
+}
+
+export async function existsIndex() {
+    const { body } = await client.exists({
+        index:config.search.index
+    })
+    if(!body){
+        //索引不存在
+        
+    }
 }
 
 export function search(body) {
@@ -48,12 +61,7 @@ export function bulkIndex(data){
             })
             bulkBody.push(item)
         })
-        client.bulk({body:bulkBody})
-              .then(res=>{
-                  //导入成功
-              }).catch(err=>{
-                  reject(err)
-              })
+
     })
 }
 
@@ -82,3 +90,8 @@ export function searchByPage(size,from){
         })
     })
 }
+
+export async function searchSuggest(){
+    
+}
+
