@@ -29,7 +29,11 @@
 //         total_floor:{
 //             type:DataTypes.INTEGET,
 //             allowNull:false
-//         },
+//         }
         
+//     },{
+//         freezeTableName:true,
+//         tableName:'house',
+//         timestamps:false
 //     })
 // }

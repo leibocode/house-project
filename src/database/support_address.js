@@ -1,5 +1,5 @@
 // export default function (sequelize,DataTypes) {
-//     const Support = sequelize.defin('Support',{
+//     const Support = sequelize.define('Support',{
 //         id:{
 //             type:DataTypes.UUID,
 //             defaultValue:DataTypes.UUIDV4,

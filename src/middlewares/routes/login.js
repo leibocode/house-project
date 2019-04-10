@@ -2,8 +2,8 @@ const express =require('express')
 const router = express.Router()
 const models = require('../../database')
 
-const User = models.User
-
+//const User = models.User
+//const House = models.House
 
 router.get('/index',function(req,res,next){
     res.render('index')
