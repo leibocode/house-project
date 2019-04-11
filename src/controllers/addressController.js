@@ -11,7 +11,11 @@ class AddressService {
      * 获取所有支持的城市列表
      */
     findAllCities(){
-        Support.find({})
+        return new Promise((resolve,reject)=>{
+            Support.findAll().then(ret=>{
+                resolve(ret)
+            })
+        })
     }
 
     /**
@@ -19,7 +23,15 @@ class AddressService {
      * @param {*} cityName 
      */
     findAllRegionsByCityName(cityName){
-
+        return new Promise((resolve,reject)=>{
+            Support.findAll({
+                where:{
+                    en_name:cityName
+                }
+            }).then(ret=>{
+                resolve(ret)
+            })
+        })
     }
 
     /**
